@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import books from './books.js';
+import { text } from 'express';
 
 // This is logic for create a new book
 export const createBook = (req, res) => {
@@ -100,8 +101,8 @@ export const getBooks = (req, res) => {
     if(req.query.name !== undefined) {
         const queryValue = req.query.name;
 
-        if(queryValue == 'dicoding') {
-            Books = Books.filter((book) => book.name == 'dicoding')
+        if(queryValue.toLowerCase() == 'dicoding') {
+            Books = Books.filter((book) => book.name.toLowerCase().includes('dicoding') === true)
         } else {
             return res.status(400).json({
                 status: 'fail',
