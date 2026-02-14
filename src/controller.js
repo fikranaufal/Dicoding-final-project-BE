@@ -65,12 +65,56 @@ export const createBook = (req, res) => {
 
 // This is logic for get all books
 export const getBooks = (req, res) => {
-    return res.status(200).json({
-        status: "success",
-        data: { books }
-    });
-};
+    let Books = books;
 
+    if(req.query.reading !== undefined) {
+        const queryValue = req.query.reading;
+
+        if(queryValue == 1) {
+            Books = Books.filter((book) => book.reading === true);
+        } else if(queryValue == 0) {
+            Books = Books.filter((book) => book.reading === false);
+        } else {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Gagal menampilkan buku. Parameter query tidak valid'
+            });
+        }
+    } 
+    
+    if(req.query.finished !== undefined) {
+        const queryValue = req.query.finished;
+
+        if(queryValue == 1) {
+            Books = Books.filter((book) => book.finished === true);
+        } else if(queryValue == 0) {
+            Books = Books.filter((book) => book.finished === false);
+        } else {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Gagal menampilkan buku. Parameter query tidak valid'
+            });
+        }
+    }
+
+    if(req.query.name !== undefined) {
+        const queryValue = req.query.name;
+
+        if(queryValue == 'dicoding') {
+            Books = Books.filter((book) => book.name == 'dicoding')
+        } else {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Gagal menampilkan buku. Parameter query tidak valid'
+            });
+        }
+    }
+
+    return res.status(200).json({
+        status: 'success',
+        data: { Books }
+    })
+}
 // This is logic for get book by id 
 export const getBookById = (req, res) => {
     const { id } = req.params;
@@ -143,39 +187,4 @@ export const editNoteById = (req, res) => {
         message: 'Gagal memperbarui catatan. Id tidak ditemukan'
     });
 
-};
-
-// Logic for get all reading books
-export const getReadingBooks = (req, res) => {
-    const { queryValue } = req.query.reading;
-    let allReadingBooks = [];
-
-    if(queryValue === 0) {
-        for(let book in books) {
-            if(book.reading === false) {
-                allReadingBooks.push(book)
-            };
-        };
-
-        return res.status(200).json({
-            status: 'success',
-            data: { allReadingBooks }
-        });
-    } else if(queryValue === 1) {
-        for(let book in books) {
-            if(book.reading === true) {
-                allReadingBooks.push(book)
-            };
-        };
-
-        return res.status(200).json({
-            status: 'success',
-            data: { allReadingBooks }
-        });
-    }
-
-    res.status(404).json({
-        status: 'fail',
-        message: 'Buku gagal diambil. Parameter query tidak sesuai'
-    })
 };
