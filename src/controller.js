@@ -66,7 +66,8 @@ export const createBook = (req, res) => {
 
 // This is logic for get all books
 export const getBooks = (req, res) => {
-    let Books = books; // define a new array 
+    let Books = books;
+    const keep = [ 'id', 'name', 'publisher' ];
 
     // This is logic for reading query
     if(req.query.reading !== undefined) {
@@ -117,10 +118,12 @@ export const getBooks = (req, res) => {
         }
     }
 
+    const filtered = Books.map(({ id, name, publisher }) => ({ id, name, publisher }));
+
     // Respond if conditional do not accomplish
     return res.status(200).json({
         status: 'success',
-        data: { Books }
+        data: { filtered }
     })
 }
 // This is logic for get book by id 
