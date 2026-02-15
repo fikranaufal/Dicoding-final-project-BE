@@ -134,7 +134,7 @@ export const getBookById = (req, res) => {
     if(book) {
         return res.status(200).json({
             status: "success",
-            data: { books }
+            data: { book }
         });
     }
 
@@ -171,7 +171,7 @@ export const editNoteById = (req, res) => {
     const { Id } = req.params; // Getting id from params
     const { name, year, author, summary, publisher, pageCount, readPage, reading} = req.body; // Getting all key from body
     const updatedAt = new Date().toISOString(); // Initialize new update
-    const index = books.findIndex((n) => n.Id === Id);
+    const index = books.findIndex((n) => n.Id === Id); // Search for book index that want to update
 
     // Conditional if there is no name in params
     if(!name) {
@@ -185,16 +185,16 @@ export const editNoteById = (req, res) => {
     if(readPage > pageCount) {
         res.status(400).json({
             status: 'fail',
-            message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari readCount'
+            message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount'
         })
     }
 
     // Conditional if the index is not negative
     if(index !== -1) {
-        books[index] = { ...books[index], name, year, author, summary, publisher, pageCount, reading, updatedAt};
-        return res.json({
+        books[index] = { ...books[index], name, year, author, summary, publisher, pageCount, readPage, reading, updatedAt};
+        return res.status(200).json({
             status: 'success',
-            message: 'Buku berhasil diperbarui'
+            message: 'Buku berhasil diperbarui',
         });
     }
 
