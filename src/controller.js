@@ -168,14 +168,14 @@ export const deleteBook = (req, res) => {
 
 // This is logic for edit note by ID
 export const editNoteById = (req, res) => {
-    const { Id } = req.params; // Getting id from params
+    const { id } = req.params; // Getting id from params
     const { name, year, author, summary, publisher, pageCount, readPage, reading} = req.body; // Getting all key from body
     const updatedAt = new Date().toISOString(); // Initialize new update
-    const index = books.findIndex((n) => n.Id === Id); // Search for book index that want to update
+    const index = books.findIndex((n) => n.id === id); // Search for book index that want to update
 
     // Conditional if there is no name in params
     if(!name) {
-        res.status(400).json({
+        return res.status(400).json({
             status: 'fail',
             message: 'Gagal memperbarui buku. Mohon isi nama buku'
         });
@@ -183,7 +183,7 @@ export const editNoteById = (req, res) => {
 
     // Conditional if there readPage more than pageCount
     if(readPage > pageCount) {
-        res.status(400).json({
+        return res.status(400).json({
             status: 'fail',
             message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount'
         })
