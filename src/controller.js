@@ -120,7 +120,9 @@ export const getBooks = (req, res) => {
     // Respond if conditional do not accomplish
     return res.status(200).json({
         status: 'success',
-        data: { books : Books.map(({ id, name, publisher }) => ({ id, name, publisher })) }
+        data: { 
+            books : Books.map(({ id, name, publisher }) => ({ id, name, publisher })) // This is for display object with only id, name, publisher key and value
+        }
     })
 }
 // This is logic for get book by id 
